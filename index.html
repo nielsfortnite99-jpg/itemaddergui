@@ -10,7 +10,7 @@
 <h1>ItemAdder GUI Painter</h1>
 
 <div id="controls">
-  <label>Reihen:
+  <label>Reihen (horizontal):
     <select id="rowsSelect" onchange="buildGUI()">
       <option value="1">1</option>
       <option value="2">2</option>
@@ -42,7 +42,10 @@
   </select>
 </div>
 
-<div id="gui"></div>
+<div id="gui-container">
+  <img src="assets/chest.png" id="gui-background">
+</div>
+
 <textarea id="output" placeholder="YAML wird hier angezeigt"></textarea>
 
 <script src="presets.js"></script>
