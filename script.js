@@ -1,4 +1,4 @@
-const guiContainer = document.getElementById("gui");
+const guiContainer = document.getElementById("gui-container");
 let slots = [];
 let rows = 6;
 
@@ -6,7 +6,6 @@ let brushType = document.getElementById("brushType");
 let colorPicker = document.getElementById("colorPicker");
 let itemInput = document.getElementById("itemInput");
 let textureUpload = document.getElementById("textureUpload");
-
 let currentTexture = null;
 
 // Texture Upload
@@ -21,16 +20,23 @@ textureUpload.addEventListener("change", function(e){
 // Build GUI
 function buildGUI(){
   rows = parseInt(document.getElementById("rowsSelect").value);
-  guiContainer.innerHTML = '';
+  slots.forEach(s=>s.element.remove());
   slots = [];
-  for(let i=0; i<rows*9; i++){
-    const div = document.createElement("div");
-    div.className = 'slot';
-    div.dataset.index = i;
-    div.addEventListener('mousedown', paintSlot);
-    div.addEventListener('mouseover', paintSlotDrag);
-    guiContainer.appendChild(div);
-    slots.push({item:null, color:null, texture:null, element: div});
+
+  const slotSize = 50;
+  const gap = 2;
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<9;c++){
+      const div = document.createElement('div');
+      div.className = 'slot';
+      div.style.left = (c*(slotSize+gap))+'px';
+      div.style.top = (r*(slotSize+gap))+'px';
+      div.dataset.index = r*9+c;
+      div.addEventListener('mousedown', paintSlot);
+      div.addEventListener('mouseover', paintSlotDrag);
+      guiContainer.appendChild(div);
+      slots.push({item:null, color:null, texture:null, element:div});
+    }
   }
 }
 
@@ -63,7 +69,7 @@ function applyBrush(slotDiv){
       slot.item = itemInput.value;
       slot.color = null;
       slot.texture = null;
-      slotDiv.style.background = '#888';
+      slotDiv.style.background = 'rgba(136,136,136,0.8)';
       slotDiv.innerHTML = slot.item ? slot.item : '';
       break;
     case 'texture':
@@ -71,7 +77,7 @@ function applyBrush(slotDiv){
       slot.texture = currentTexture;
       slot.color = null;
       slot.item = null;
-      slotDiv.style.background = '#888';
+      slotDiv.style.background = 'rgba(136,136,136,0.8)';
       slotDiv.innerHTML = '';
       const img = document.createElement('img');
       img.src = currentTexture;
@@ -86,7 +92,7 @@ function clearGUI(){
     s.color = null;
     s.item = null;
     s.texture = null;
-    s.element.style.background = '#888';
+    s.element.style.background = 'rgba(136,136,136,0.8)';
     s.element.innerHTML = '';
   });
 }
