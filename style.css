@@ -1,28 +1,36 @@
 body {
-  font-family: Arial;
-  background: #1e1e1e;
-  color: white;
+  font-family: Arial, sans-serif;
   text-align: center;
+  background: #222;
+  color: white;
+}
+
+#controls {
+  margin: 20px;
 }
 
 #gui {
   display: grid;
-  grid-template-columns: repeat(9, 50px);
-  gap: 5px;
+  grid-template-columns: repeat(9, 60px);
+  grid-gap: 5px;
   justify-content: center;
-  margin: 20px;
+  margin: 20px auto;
 }
 
 .slot {
-  width: 50px;
-  height: 50px;
-  background: #333;
-  border: 1px solid #555;
+  width: 60px;
+  height: 60px;
+  background: #444;
+  border: 1px solid #888;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.slot.active {
-  background: #4caf50;
+.slot img {
+  max-width: 50px;
+  max-height: 50px;
 }
 
 textarea {
