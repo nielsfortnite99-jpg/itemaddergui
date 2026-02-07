@@ -2,10 +2,31 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Meine GitHub Page</title>
+  <title>ItemAdder GUI Generator</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Es klappt 🎉</h1>
-  <p>Meine GitHub Page ist online.</p>
+
+<h1>ItemAdder Custom GUI Generator</h1>
+
+<div id="controls">
+  <input id="itemId" placeholder="itemadder:item_name">
+  <button onclick="setItem()">Slot setzen</button>
+
+  <select onchange="loadPreset(this.value)">
+    <option value="">Preset wählen</option>
+    <option value="shop">Shop GUI</option>
+    <option value="menu">Main Menu</option>
+  </select>
+
+  <button onclick="exportYAML()">YAML exportieren</button>
+</div>
+
+<div id="gui"></div>
+
+<textarea id="output" placeholder="YAML Output"></textarea>
+
+<script src="presets.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
