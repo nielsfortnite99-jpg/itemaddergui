@@ -1,67 +1,130 @@
-const gui = document.getElementById("gui");
-let slots = Array(54).fill(null);
-let selectedSlot = 0;
-let uploadedTexture = null;
+const guiContainer = document.getElementById("gui");
+let slots = [];
+let rows = 6;
 
-// GUI Slots erstellen
-for (let i = 0; i < 54; i++) {
-  const div = document.createElement("div");
-  div.className = "slot";
-  div.onclick = () => selectedSlot = i;
-  gui.appendChild(div);
-}
+let brushType = document.getElementById("brushType");
+let colorPicker = document.getElementById("colorPicker");
+let itemInput = document.getElementById("itemInput");
+let textureUpload = document.getElementById("textureUpload");
 
-// Textur Upload
-document.getElementById("textureUpload").addEventListener("change", function(e) {
+let currentTexture = null;
+
+// Texture Upload
+textureUpload.addEventListener("change", function(e){
   const reader = new FileReader();
-  reader.onload = function(event) {
-    uploadedTexture = event.target.result;
+  reader.onload = function(event){
+    currentTexture = event.target.result;
   }
   reader.readAsDataURL(e.target.files[0]);
 });
 
-// Slot setzen
-function setSlot() {
-  const itemId = document.getElementById("itemId").value;
-  const slotDiv = gui.children[selectedSlot];
-  slots[selectedSlot] = { item: itemId, texture: uploadedTexture || null };
-
-  slotDiv.innerHTML = '';
-  if (uploadedTexture) {
-    const img = document.createElement("img");
-    img.src = uploadedTexture;
-    slotDiv.appendChild(img);
-  } else {
-    slotDiv.textContent = itemId || '';
+// Build GUI
+function buildGUI(){
+  rows = parseInt(document.getElementById("rowsSelect").value);
+  guiContainer.innerHTML = '';
+  slots = [];
+  for(let i=0; i<rows*9; i++){
+    const div = document.createElement("div");
+    div.className = 'slot';
+    div.dataset.index = i;
+    div.addEventListener('mousedown', paintSlot);
+    div.addEventListener('mouseover', paintSlotDrag);
+    guiContainer.appendChild(div);
+    slots.push({item:null, color:null, texture:null, element: div});
   }
 }
 
-// Presets laden
-function loadPreset(name) {
-  if (!presets[name]) return;
-  slots = Array(54).fill(null);
-  document.querySelectorAll(".slot").forEach(s => s.innerHTML = '');
-  Object.entries(presets[name]).forEach(([i, data]) => {
-    slots[i] = data;
-    const div = gui.children[i];
-    if (data.texture) {
-      const img = document.createElement("img");
-      img.src = data.texture;
-      div.appendChild(img);
-    } else {
-      div.textContent = data.item;
+// Paint functions
+let mouseDown = false;
+document.body.onmousedown = ()=>mouseDown=true;
+document.body.onmouseup = ()=>mouseDown=false;
+
+function paintSlot(e){
+  applyBrush(e.target);
+}
+
+function paintSlotDrag(e){
+  if(mouseDown) applyBrush(e.target);
+}
+
+function applyBrush(slotDiv){
+  const idx = slotDiv.dataset.index;
+  let slot = slots[idx];
+
+  switch(brushType.value){
+    case 'color':
+      slot.color = colorPicker.value;
+      slot.item = null;
+      slot.texture = null;
+      slotDiv.style.background = colorPicker.value;
+      slotDiv.innerHTML = '';
+      break;
+    case 'item':
+      slot.item = itemInput.value;
+      slot.color = null;
+      slot.texture = null;
+      slotDiv.style.background = '#888';
+      slotDiv.innerHTML = slot.item ? slot.item : '';
+      break;
+    case 'texture':
+      if(!currentTexture) return;
+      slot.texture = currentTexture;
+      slot.color = null;
+      slot.item = null;
+      slotDiv.style.background = '#888';
+      slotDiv.innerHTML = '';
+      const img = document.createElement('img');
+      img.src = currentTexture;
+      slotDiv.appendChild(img);
+      break;
+  }
+}
+
+// Clear GUI
+function clearGUI(){
+  slots.forEach(s=>{
+    s.color = null;
+    s.item = null;
+    s.texture = null;
+    s.element.style.background = '#888';
+    s.element.innerHTML = '';
+  });
+}
+
+// Presets
+function loadPreset(name){
+  if(!presets[name]) return;
+  clearGUI();
+  Object.entries(presets[name]).forEach(([i,data])=>{
+    const slot = slots[i];
+    slot.item = data.item || null;
+    slot.color = data.color || null;
+    slot.texture = data.texture || null;
+    const el = slot.element;
+    el.innerHTML = '';
+    if(slot.texture){
+      const img = document.createElement('img');
+      img.src = slot.texture;
+      el.appendChild(img);
+    } else if(slot.item){
+      el.innerHTML = slot.item;
+    } else if(slot.color){
+      el.style.background = slot.color;
     }
   });
 }
 
-// YAML export
-function exportYAML() {
+// Export YAML
+function exportYAML(){
   let yaml = 'items:\n';
-  slots.forEach((slot, i) => {
-    if (slot) {
-      yaml += `  slot_${i}:\n    item: ${slot.item}\n`;
-      if (slot.texture) yaml += `    texture: ${slot.texture}\n`;
+  slots.forEach((slot,i)=>{
+    if(slot.item || slot.texture){
+      yaml += `  slot_${i}:\n`;
+      if(slot.item) yaml += `    item: ${slot.item}\n`;
+      if(slot.texture) yaml += `    texture: ${slot.texture}\n`;
     }
   });
-  document.getElementById("output").value = yaml;
+  document.getElementById('output').value = yaml;
 }
+
+buildGUI();
