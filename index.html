@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>ItemAdder GUI Generator</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>ItemAdder GUI Builder</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>ItemAdder Custom GUI Generator</h1>
+<h1>ItemAdder GUI Builder (Prototyp)</h1>
 
 <div id="controls">
-  <input id="itemId" placeholder="itemadder:item_name">
-  <button onclick="setItem()">Slot setzen</button>
+  <input id="itemId" placeholder="ItemAdder ID">
+  <input type="file" id="textureUpload" accept="image/*">
+  <button onclick="setSlot()">Set Slot</button>
 
   <select onchange="loadPreset(this.value)">
     <option value="">Preset wählen</option>
-    <option value="shop">Shop GUI</option>
-    <option value="menu">Main Menu</option>
+    <option value="shop">Shop</option>
+    <option value="menu">Menu</option>
   </select>
 
   <button onclick="exportYAML()">YAML exportieren</button>
@@ -24,7 +25,7 @@
 
 <div id="gui"></div>
 
-<textarea id="output" placeholder="YAML Output"></textarea>
+<textarea id="output" placeholder="Hier erscheint der YAML-Export"></textarea>
 
 <script src="presets.js"></script>
 <script src="script.js"></script>
