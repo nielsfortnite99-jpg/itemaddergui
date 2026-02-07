@@ -2,30 +2,48 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>ItemAdder GUI Builder</title>
+<title>ItemAdder GUI Painter</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>ItemAdder GUI Builder (Prototyp)</h1>
+<h1>ItemAdder GUI Painter</h1>
 
 <div id="controls">
-  <input id="itemId" placeholder="ItemAdder ID">
-  <input type="file" id="textureUpload" accept="image/*">
-  <button onclick="setSlot()">Set Slot</button>
+  <label>Reihen:
+    <select id="rowsSelect" onchange="buildGUI()">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6" selected>6</option>
+    </select>
+  </label>
 
+  <label>Pinsel:
+    <select id="brushType">
+      <option value="color">Farbe</option>
+      <option value="item">Item</option>
+      <option value="texture">Textur</option>
+    </select>
+  </label>
+
+  <input type="color" id="colorPicker" value="#ff0000">
+  <input type="text" id="itemInput" placeholder="ItemAdder ID">
+  <input type="file" id="textureUpload" accept="image/*">
+
+  <button onclick="clearGUI()">Clear GUI</button>
+  <button onclick="exportYAML()">Download YAML</button>
   <select onchange="loadPreset(this.value)">
-    <option value="">Preset wählen</option>
+    <option value="">Preset laden</option>
     <option value="shop">Shop</option>
     <option value="menu">Menu</option>
   </select>
-
-  <button onclick="exportYAML()">YAML exportieren</button>
 </div>
 
 <div id="gui"></div>
-
-<textarea id="output" placeholder="Hier erscheint der YAML-Export"></textarea>
+<textarea id="output" placeholder="YAML wird hier angezeigt"></textarea>
 
 <script src="presets.js"></script>
 <script src="script.js"></script>
