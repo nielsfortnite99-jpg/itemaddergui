@@ -13,24 +13,27 @@ body {
   justify-content: center;
 }
 
-#gui {
-  display: grid;
-  grid-gap: 2px;
-  justify-content: center;
-  margin: 20px auto;
-  background: #555;
-  padding: 5px;
+#gui-container {
+  position: relative;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+#gui-background {
+  width: 540px; /* passt für 6 Slots horizontal */
+  display: block;
 }
 
 .slot {
+  position: absolute;
   width: 50px;
   height: 50px;
-  background: #888;
   border: 1px solid #333;
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+  background: rgba(136,136,136,0.8);
 }
 
 .slot img {
