@@ -1,40 +1,49 @@
 body {
-  font-family: Arial, sans-serif;
-  text-align: center;
+  font-family: Arial;
   background: #222;
   color: white;
+  text-align: center;
 }
 
 #controls {
-  margin: 20px;
+  margin: 15px auto;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 #gui {
   display: grid;
-  grid-template-columns: repeat(9, 60px);
-  grid-gap: 5px;
+  grid-gap: 2px;
   justify-content: center;
   margin: 20px auto;
+  background: #555;
+  padding: 5px;
 }
 
 .slot {
-  width: 60px;
-  height: 60px;
-  background: #444;
-  border: 1px solid #888;
-  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  background: #888;
+  border: 1px solid #333;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .slot img {
-  max-width: 50px;
-  max-height: 50px;
+  max-width: 45px;
+  max-height: 45px;
 }
 
 textarea {
   width: 80%;
   height: 200px;
   margin-top: 20px;
+  background: #333;
+  color: white;
+  border: 1px solid #555;
+  padding: 5px;
 }
